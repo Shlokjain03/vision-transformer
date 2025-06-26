@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vision Transformer Image Classifier</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px 40px;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .prediction {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .prediction img {
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+        }
+
+        .history {
+            margin-top: 40px;
+        }
+
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .history li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            background: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+
+        .history img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 15px;
+            border: 1px solid #ccc;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            input[type="file"] {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+
+            .history li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .history img {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Vision Transformer Classifier</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+    <div class="prediction">
+        <h2>Prediction: {{ prediction }}</h2>
+        <p>Confidence: {{ '%.2f' % (confidence * 100) }}%</p>
+        <img src="{{ image_path }}" alt="Uploaded Image">
+    </div>
+    {% endif %}
+
+    <div class="history">
+        <h3>Prediction History</h3>
+        <ul>
+            {% for pred in history %}
+<li>
+    <img src="{{ pred[1] }}" alt="Previous Image">
+    <div>
+        <strong>{{ pred[2] }}</strong><br>
+        Confidence: {{ '%.2f' % (pred[3] * 100) }}%
+    </div>
+</li>
+{% endfor %}
+
+        </ul>
+    </div>
+</div>
+</body>
+</html>
